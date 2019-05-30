@@ -1,6 +1,6 @@
 // Copyright 2018 TiKV Project Authors. Licensed under Apache-2.0.
 
-use chrono::{DateTime, Datelike, TimeZone, Weekday};
+use chrono::{DateTime, Datelike, TimeZone, Timelike, Weekday};
 
 use super::weekmode::WeekMode;
 
@@ -48,6 +48,7 @@ pub trait DateTimeExtension {
     fn year_week(&self, mode: WeekMode) -> (i32, i32);
     fn abbr_day_of_month(&self) -> &'static str;
     fn day_number(&self) -> i32;
+    fn second_since_zero(&self) -> i64;
 }
 
 impl<Tz: TimeZone> DateTimeExtension for DateTime<Tz> {
@@ -148,6 +149,11 @@ impl<Tz: TimeZone> DateTimeExtension for DateTime<Tz> {
     /// returns the days since 0000-00-00
     fn day_number(&self) -> i32 {
         calc_day_number(self.year(), self.month() as i32, self.day() as i32)
+    }
+
+    /// returns the seconds since 0000-00-00 00:00:00
+    fn second_since_zero(&self) -> i64 {
+        i64::from(self.day_number()) * 3600i64 * 24i64 + i64::from(self.num_seconds_from_midnight())
     }
 }
 
