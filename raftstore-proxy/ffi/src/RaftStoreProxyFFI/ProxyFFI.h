@@ -80,7 +80,8 @@ enum class EngineStoreServerStatus : uint8_t {
 enum class RawCppPtrType : uint32_t {
   None = 0,
   String,
-  PreHandledSnapshot,
+  PreHandledSnapshotWithBlock,
+  PreHandledSnapshotWithFiles,
 };
 
 struct RawCppPtr {
